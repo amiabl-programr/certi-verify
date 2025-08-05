@@ -2,10 +2,8 @@ import express from 'express'
 import { connectToDatabase } from './config/db-config';
 import authRoutes from './routes/auth-routes'
 import userRoutes from './routes/user-routes';
-
 connectToDatabase()
 const app = express();
-
 app.use(express.json())
 app.get('/', (req, res) => {
   res.send('Hello World!');

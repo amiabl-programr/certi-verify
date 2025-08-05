@@ -3,27 +3,35 @@ import { Request, Response } from "express";
 import { hash, genSalt, compare } from "bcryptjs";
 import { generateToken, verifyToken } from "../utils/token";
 import { validateUserLogin, validateRegisterUser } from "../utils/validation";
+import { sendMail } from "../services/email";
 
 
 export const register = async (req: Request, res: Response) => {
-    const { email, name, password } = req.body
 
-    const validation = validateRegisterUser({ email, name, password });
+
+    const validation = validateRegisterUser(req.body);
     if (!validation.success) {
         return res.status(400).json({ errors: validation.error!.issues[0].message });
     }
+    try {
 
-    const userExist = await UserModel.findOne({ email })
-    if (userExist) return res.status(400).json({ msg: "user already exist" })
 
-    const salt = await genSalt(10)
-    const hashedPassoword = await hash(password, salt)
+        const { email, name, password } = req.body
+        const userExist = await UserModel.findOne({ email })
+        if (userExist) return res.status(400).json({ msg: "user already exist" })
 
-    const newUser = await UserModel.create({ email, name, password: hashedPassoword })
+        const salt = await genSalt(10)
+        const hashedPassoword = await hash(password, salt)
 
-    // const sendMail =  logic to send mail once user is created
+        const newUser = await UserModel.create({ email, name, password: hashedPassoword })
 
-    res.status(201).json({ msg: "user created succesfully, check your mail to verify your account" })
+        await sendMail(email, generateToken(newUser._id as string), name)
+
+        res.status(201).json({ msg: "user created succesfully, check your mail to verify your account" })
+    } catch (error) {
+        console.error("Error during registration:", error);
+        res.status(500).json({ msg: "Internal server error" });
+    }
 
 }
 
@@ -77,12 +85,17 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const forgotPassword = async (req: Request, res: Response) => {
-    const { email } = req.body
-    const user = await UserModel.find({ email })
-    if (!user)
-        return res.status(400).json({ msg: "Invalid parameter" })
-    // Logic to send reset password email
-    res.status(200).json({ msg: "Reset password email sent" })
+    try {
+
+        const { email } = req.body
+        const user = await UserModel.findOne({ email })
+        if (!user)
+            return res.status(400).json({ msg: "Invalid parameter" })
+        await sendMail(email, generateToken(user._id as string), user.name)
+        res.status(200).json({ msg: "Reset password email sent" })
+    } catch (error) {
+        res.status(500).json({ msg: "Internal server error" });
+    }
 }
 
 export const resetPassword = async (req: Request, res: Response) => {
