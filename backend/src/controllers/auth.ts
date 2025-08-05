@@ -76,8 +76,8 @@ export const login = async (req: Request, res: Response) => {
         const user = await UserModel.findOne({ email })
         if (!user)
             return res.status(400).json({ msg: "Invalid parameter" })
-        // if (!user.isEmailVerified)
-        //     return res.status(400).json({ msg: "Email not verified" })
+        if (!user.isEmailVerified)
+            return res.status(400).json({ msg: "Email not verified" })
         const passwordMatch = await compare(password, user.password);
         if (!passwordMatch)
             return res.status(400).json({ msg: "Invalid Parameters" })
