@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Lock, User, ArrowRight, Award } from "lucide-react";
 import { useState } from "react";
+import { registerUser } from "@/utils/userService";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -21,8 +22,26 @@ export default function Register() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      // check if passwords match
+      if (formData.password !== formData.confirmPassword) {
+        console.error("Passwords do not match");
+        return;
+      }
+     const response = await registerUser(formData);
+      if (response.status === 201) {
+          console.log("Registration successful:", response.data);
+        } else {
+          console.error("Registration failed:", response.data);
+        }
+
+    }catch (error) {
+      console.error("Registration error:", error);
+      return;
+    }
     // Handle registration logic here
     console.log("Registration attempt:", formData);
   };
@@ -133,7 +152,7 @@ export default function Register() {
                   </Label>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={!formData.agreeToTerms}>
+                <Button type="submit" className="w-full">
                   Create Account
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
