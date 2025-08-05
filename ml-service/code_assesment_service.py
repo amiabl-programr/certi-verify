@@ -13,6 +13,10 @@ import uuid
 import asyncio
 import os
 from dotenv import load_dotenv
+from fastapi import APIRouter
+
+router = APIRouter()
+
 
 load_dotenv() 
 
@@ -474,7 +478,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@app.get("/")
+@app.get("/code")
 async def root():
     return {
         "message": "HashProof Code Assessment System is running!", 
@@ -484,7 +488,7 @@ async def root():
         "features": ["AI-generated coding questions", "Intelligent code grading", "Multiple programming languages"]
     }
 
-@app.post("/generate_code_test")
+@app.post("/code/generate_code_test")
 async def create_code_test(request: TestRequest):
     """Generate a coding test"""
     try:
@@ -503,7 +507,7 @@ async def create_code_test(request: TestRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate code test: {str(e)}")
 
-@app.post("/grade_code_test")
+@app.post("/code/grade_code_test")
 async def grade_code_assessment(request: GradeRequest):
     """Grade a coding test"""
     try:
@@ -522,7 +526,7 @@ async def grade_code_assessment(request: GradeRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to grade code test: {str(e)}")
 
-@app.get("/sample_code_test")
+@app.get("/code/sample_code_test")
 async def get_sample_code():
     """Get a sample coding test"""
     try:
@@ -533,7 +537,7 @@ async def get_sample_code():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate sample code test: {str(e)}")
 
-@app.get("/test/{test_id}")
+@app.get("code/test/{test_id}")
 async def get_test(test_id: str):
     """Retrieve a test by ID"""
     test_data = TEST_STORAGE.get(test_id)
@@ -541,7 +545,7 @@ async def get_test(test_id: str):
         raise HTTPException(status_code=404, detail="Test not found")
     return test_data
 
-@app.get("/health")
+@app.get("/code/health")
 async def health_check():
     """Health check endpoint"""
     try:
