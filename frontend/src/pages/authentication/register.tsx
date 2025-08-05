@@ -11,11 +11,10 @@ import { registerUser } from "@/utils/userService";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    agreeToTerms: false
   });
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -75,16 +74,16 @@ export default function Register() {
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="flex items-center gap-2">
+                  <Label htmlFor="name" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Full Name
                   </Label>
                   <Input
-                    id="fullName"
+                    id="name"
                     type="text"
                     placeholder="Enter your full name"
-                    value={formData.fullName}
-                    onChange={(e) => handleChange("fullName", e.target.value)}
+                    value={formData.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
                     required
                   />
                 </div>
@@ -137,7 +136,7 @@ export default function Register() {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="terms"
-                    checked={formData.agreeToTerms}
+                    // checked={formData.agreeToTerms}
                     onCheckedChange={(checked) => handleChange("agreeToTerms", checked as boolean)}
                   />
                   <Label htmlFor="terms" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
