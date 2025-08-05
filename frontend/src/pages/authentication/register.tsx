@@ -8,6 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Lock, User, ArrowRight, Award } from "lucide-react";
 import { useState } from "react";
 import { registerUser } from "@/utils/userService";
+import { useNavigate } from "react-router";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -30,8 +33,13 @@ export default function Register() {
         console.error("Passwords do not match");
         return;
       }
+      // call the api to register the user
      const response = await registerUser(formData);
       if (response.status === 201) {
+          toast.success("Registration successful! Please check your email to verify your account.");
+          setTimeout (()=>{
+            navigate("/login");
+          }, 2000)
           console.log("Registration successful:", response.data);
         } else {
           console.error("Registration failed:", response.data);
@@ -55,7 +63,7 @@ export default function Register() {
           </Badge>
         </div>
       </header>
-
+      <ToastContainer/>
       {/* Main Register Content */}
       <main className="flex-1 flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-md">

@@ -6,14 +6,45 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, ArrowRight, Zap } from "lucide-react";
 import { useState } from "react";
+import { loginUser } from "@/utils/userService";
+import { useNavigate } from "react-router";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
+
+    // validation
+
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
+    try{
+      console.log("Login attempt:", { email, password });
+      // Call your login API here
+      const response = await loginUser({ email, password });
+      if (response.status === 200) {
+        toast.success("Login successful! Redirecting...");
+        setTimeout(() => {  
+          navigate("/dashboard");
+        }, 2000);
+        console.log("Login successful:", response.data);
+      } else {
+        console.error("Login failed:", response.data);
+      }
+      // Example: await loginUser({ email, password });
+    }catch(error) {console.error("Login error:", error);}
     console.log("Login attempt:", { email, password });
   };
 
@@ -27,7 +58,7 @@ export default function Login() {
           </Badge>
         </div>
       </header>
-
+      <ToastContainer />
       {/* Main Login Content */}
       <main className="flex-1 flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-md">
