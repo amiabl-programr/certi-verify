@@ -434,7 +434,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@app.get("/mcq")
+@router.get("/mcq")
 async def root():
     return {
         "message": "HashProof MCQ Assessment System is running!", 
@@ -444,7 +444,7 @@ async def root():
         "features": ["AI-generated MCQ questions", "Intelligent MCQ grading", "Multiple topics and difficulties"]
     }
 
-@app.post("/mcq/generate_mcq_test")
+@router.post("/mcq/generate_mcq_test")
 async def create_mcq_test(request: TestRequest):
     """Generate an MCQ test"""
     try:
@@ -463,7 +463,7 @@ async def create_mcq_test(request: TestRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate MCQ test: {str(e)}")
 
-@app.post("/mcq/grade_mcq_test")
+@router.post("/mcq/grade_mcq_test")
 async def grade_mcq_assessment(request: GradeRequest):
     """Grade an MCQ test"""
     try:
@@ -482,7 +482,7 @@ async def grade_mcq_assessment(request: GradeRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to grade MCQ test: {str(e)}")
 
-@app.get("/mcq/sample_mcq_test")
+@router.get("/mcq/sample_mcq_test")
 async def get_sample_mcq():
     """Get a sample MCQ test"""
     try:
@@ -493,7 +493,7 @@ async def get_sample_mcq():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate sample MCQ test: {str(e)}")
 
-@app.get("/mcq/test/{test_id}")
+@router.get("/mcq/test/{test_id}")
 async def get_test(test_id: str):
     """Retrieve a test by ID"""
     test_data = TEST_STORAGE.get(test_id)
@@ -501,7 +501,7 @@ async def get_test(test_id: str):
         raise HTTPException(status_code=404, detail="Test not found")
     return test_data
 
-@app.get("/mcq/health")
+@router.get("/mcq/health")
 async def health_check():
     """Health check endpoint"""
     try:
