@@ -65,23 +65,32 @@ export const verifyUser = async (req: Request, res: Response) => {
 }
 
 export const login = async (req: Request, res: Response) => {
+
     const { email, password } = req.body
     const validation = validateUserLogin({ email, password });
     if (!validation.success) {
         return res.status(400).json({ errors: validation.error });
     }
-    const user = await UserModel.findOne({ email })
-    if (!user)
-        return res.status(400).json({ msg: "Invalid parameter" })
-    if (!user.isEmailVerified)
-        return res.status(400).json({ msg: "Email not verified" })
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch)
-        return res.status(400).json({ msg: "Invalid Parameters" })
-    const token = generateToken(user._id as string)
+    try {
 
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 60 * 60 * 1000 }) // 1 hour
-    res.status(200).json({ msg: "Login successful" })
+        const user = await UserModel.findOne({ email })
+        if (!user)
+            return res.status(400).json({ msg: "Invalid parameter" })
+        // if (!user.isEmailVerified)
+        //     return res.status(400).json({ msg: "Email not verified" })
+        const passwordMatch = await compare(password, user.password);
+        if (!passwordMatch)
+            return res.status(400).json({ msg: "Invalid Parameters" })
+        const token = generateToken(user._id as string)
+        const { password: passwordExcluded, ...safeUser } = user.toObject();
+
+
+        res.status(200).cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 60 * 60 * 1000 })
+            .json({ msg: "Login successful" })
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ msg: "Internal server error" });
+    }
 }
 
 export const forgotPassword = async (req: Request, res: Response) => {
