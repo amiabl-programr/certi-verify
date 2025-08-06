@@ -434,7 +434,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@router.get("/mcq")
+@router.get("/")
 async def root():
     return {
         "message": "HashProof MCQ Assessment System is running!", 
