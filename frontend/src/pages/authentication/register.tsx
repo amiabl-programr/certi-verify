@@ -7,22 +7,48 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Lock, User, ArrowRight, Award } from "lucide-react";
 import { useState } from "react";
+import { registerUser } from "@/utils/userService";
+import { useNavigate } from "react-router";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    agreeToTerms: false
   });
+  const navigate = useNavigate();
 
   const handleChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      // check if passwords match
+      if (formData.password !== formData.confirmPassword) {
+        console.error("Passwords do not match");
+        return;
+      }
+      // call the api to register the user
+     const response = await registerUser(formData);
+      if (response.status === 201) {
+          toast.success("Registration successful! Please check your email to verify your account.");
+          setTimeout (()=>{
+            navigate("/login");
+          }, 2000)
+          console.log("Registration successful:", response.data);
+        } else {
+          console.error("Registration failed:", response.data);
+        }
+
+    }catch (error) {
+      console.error("Registration error:", error);
+      return;
+    }
     // Handle registration logic here
     console.log("Registration attempt:", formData);
   };
@@ -37,7 +63,7 @@ export default function Register() {
           </Badge>
         </div>
       </header>
-
+      <ToastContainer/>
       {/* Main Register Content */}
       <main className="flex-1 flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-md">
@@ -56,16 +82,16 @@ export default function Register() {
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="flex items-center gap-2">
+                  <Label htmlFor="name" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Full Name
                   </Label>
                   <Input
-                    id="fullName"
+                    id="name"
                     type="text"
                     placeholder="Enter your full name"
-                    value={formData.fullName}
-                    onChange={(e) => handleChange("fullName", e.target.value)}
+                    value={formData.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
                     required
                   />
                 </div>
@@ -118,7 +144,7 @@ export default function Register() {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="terms"
-                    checked={formData.agreeToTerms}
+                    // checked={formData.agreeToTerms}
                     onCheckedChange={(checked) => handleChange("agreeToTerms", checked as boolean)}
                   />
                   <Label htmlFor="terms" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -133,7 +159,7 @@ export default function Register() {
                   </Label>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={!formData.agreeToTerms}>
+                <Button type="submit" className="w-full">
                   Create Account
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

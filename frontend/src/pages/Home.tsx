@@ -2,12 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Cpu, FileCheck, Zap, Shield, Award } from "lucide-react";
+import Navbar from "@/components/navbar";
 // import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Hero Section */}
+      <Navbar />
       <section className="relative px-6 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
