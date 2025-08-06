@@ -44,6 +44,7 @@ export const verifyUser = async (req: Request, res: Response) => {
 
     try {
         const decoded = verifyToken(token) as { userId: string };
+        console.log('Decoded token:', decoded);
         // Find user and update
         const user = await UserModel.findById(decoded.userId);
         if (!user) {
