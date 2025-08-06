@@ -21,15 +21,7 @@ import {
 import { useAuth } from "@/context/Authorisation";
 
 // Mock user data
-const userData = {
-  name: "Damola",
-  email: "damola@example.com",
-  joinDate: "January 2025",
-  totalTests: 12,
-  passedTests: 8,
-  averageScore: 87,
-  streak: 5
-};
+
 
 // Mock test data with different statuses
 const mockTests = [
