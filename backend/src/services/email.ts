@@ -82,7 +82,7 @@ export const sendMail = async (to: string, token: string, name: string): Promise
     <div class="content">
       <p>We're excited to have you on board. Certi-Verify helps you verify and manage certifications with ease.</p>
       <p>To get started, please verify your email address by clicking the button below:</p>
-      <a href="https://certi-verify.onrender.com/verify-email?token=${token}" class="verify-button">Verify Email</a>
+      <a href="https://certi-verify.onrender.com/api/auth/verify-email?token=${token}" class="verify-button">Verify Email</a>
     </div>
     <div class="footer">
       &copy; 2025 Certi-Verify. All rights reserved.
