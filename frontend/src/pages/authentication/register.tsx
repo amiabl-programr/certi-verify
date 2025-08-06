@@ -3,12 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Lock, User, ArrowRight, Award } from "lucide-react";
 import { useState } from "react";
 import { registerUser } from "@/utils/userService";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function Register() {
@@ -165,23 +164,11 @@ export default function Register() {
                 </Button>
               </form>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <Separator />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
-                </div>
-              </div>
-
-              <Button variant="outline" className="w-full">
-                Sign up with GitHub
-              </Button>
 
               <div className="text-center text-sm text-muted-foreground">
                 Already have an account?{" "}
                 <Button variant="link" className="p-0 h-auto text-blue-600 hover:text-blue-700">
-                  Sign in
+                  <Link to="/login"> Sign in </Link>
                 </Button>
               </div>
             </CardContent>

@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, ArrowRight, Zap } from "lucide-react";
 import { useState } from "react";
 import { loginUser } from "@/utils/userService";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "@/context/Authorisation";
 
@@ -130,14 +130,11 @@ export default function Login() {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full">
-                Continue with GitHub
-              </Button>
-
+              
               <div className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Button variant="link" className="p-0 h-auto text-blue-600 hover:text-blue-700">
-                  Sign up for free
+                 <Link to="/register">Sign up for free </Link> 
                 </Button>
               </div>
             </CardContent>
