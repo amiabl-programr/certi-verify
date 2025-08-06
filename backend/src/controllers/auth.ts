@@ -87,7 +87,7 @@ export const login = async (req: Request, res: Response) => {
 
 
         res.status(200).cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 60 * 60 * 1000 })
-            .json({ msg: "Login successful" })
+            .json({ msg: "Login successful", user: safeUser });
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ msg: "Internal server error" });

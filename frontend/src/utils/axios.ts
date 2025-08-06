@@ -3,6 +3,7 @@ import axios from 'axios';
 // Create an Axios instance
 const api = axios.create({
   baseURL: 'https://certi-verify.onrender.com', // Set your base URL here
+  // baseURL: 'http://localhost:3000', // Set your base URL here
   timeout: 50000,                     // Optional: timeout in ms
   headers: {
     'Content-Type': 'application/json',

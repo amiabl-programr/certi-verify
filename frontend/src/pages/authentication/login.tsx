@@ -39,7 +39,7 @@ export default function Login() {
       if (response.status === 200) {
         toast.success("Login successful! Redirecting...");
         setTimeout(() => {
-          login(email);  
+          login(response.data.user);  
           navigate("/dashboard");
         }, 2000);
         console.log("Login successful:", response.data);
