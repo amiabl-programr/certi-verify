@@ -2,6 +2,9 @@ import express from 'express'
 import { connectToDatabase } from './config/db-config';
 import authRoutes from './routes/auth-routes'
 import userRoutes from './routes/user-routes';
+connectToDatabase()
+const app = express();
+=======
 import cors from 'cors';
 
 
