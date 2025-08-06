@@ -4,12 +4,11 @@ import authRoutes from './routes/auth-routes'
 import userRoutes from './routes/user-routes';
 connectToDatabase()
 const app = express();
-=======
+
 import cors from 'cors';
 
 
-connectToDatabase()
-const app = express();
+
 
 const allowedOrigins = ['http://localhost:5173', 'https://certi-verify.vercel.app/'];
 
