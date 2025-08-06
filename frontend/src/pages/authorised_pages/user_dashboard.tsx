@@ -18,6 +18,7 @@ import {
   FileText,
   Zap
 } from "lucide-react";
+import { useAuth } from "@/context/Authorisation";
 
 // Mock user data
 const userData = {
@@ -110,6 +111,21 @@ const recentActivity = [
 ];
 
 export default function UserDashboard() {
+  const  {user} = useAuth();
+
+const userData = {
+  name: user?.name || "User",
+  email: user?.email || " email",
+  joinDate: user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A",
+  totalTests: mockTests.length,
+  passedTests: mockTests.filter(test => test.status === "passed").length,
+  averageScore: mockTests.reduce((sum, test) => sum + (test.score ||
+0), 0) / mockTests.filter(test => test.score).length || 0,
+  streak: 5 // Mock streak data
+};
+
+
+
   const getStatusBadge = (test: typeof mockTests[0]) => {
     switch (test.status) {
       case "not_started":
