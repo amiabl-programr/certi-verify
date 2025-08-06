@@ -2,15 +2,14 @@ import express from 'express'
 import { connectToDatabase } from './config/db-config';
 import authRoutes from './routes/auth-routes'
 import userRoutes from './routes/user-routes';
-connectToDatabase()
-const app = express();
-=======
+
 import cors from 'cors';
 
+import dotenv from 'dotenv';
+dotenv.config();
 
 connectToDatabase()
 const app = express();
-
 const allowedOrigins = ['http://localhost:5173', 'https://certi-verify.vercel.app/'];
 
 
