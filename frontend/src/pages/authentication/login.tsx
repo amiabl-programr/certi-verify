@@ -9,11 +9,13 @@ import { useState } from "react";
 import { loginUser } from "@/utils/userService";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from 'react-toastify';
+import { useAuth } from "@/context/Authorisation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +38,8 @@ export default function Login() {
       const response = await loginUser({ email, password });
       if (response.status === 200) {
         toast.success("Login successful! Redirecting...");
-        setTimeout(() => {  
+        setTimeout(() => {
+          login(email);  
           navigate("/dashboard");
         }, 2000);
         console.log("Login successful:", response.data);
